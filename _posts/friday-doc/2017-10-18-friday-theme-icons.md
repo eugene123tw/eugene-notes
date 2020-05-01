@@ -1,5 +1,6 @@
 ---
 title:  How to use Icons
+published: false
 tags:
   - icons
   - Friday Theme

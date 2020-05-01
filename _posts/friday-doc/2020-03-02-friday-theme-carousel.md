@@ -1,5 +1,6 @@
 ---
 title:  How to use Multiple Images in a Carousel
+published: false
 tags:
   - Friday Theme
   - HTML
