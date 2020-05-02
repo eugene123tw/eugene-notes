@@ -1,0 +1,29 @@
+.case1 span, .case2 span {
+  background-color: white;
+}
+
+.case1 div>span {
+  background-color: DodgerBlue;
+}
+
+.case2 div span {
+  background-color: DodgerBlue;
+}
+
+.notebox { 
+  border: 4px solid #666;
+  background-color: yellow;
+  padding: .5em;
+} 
+
+.notebox.warning {
+  border-color: orange;
+  background-color: white;
+  font-weight: bold;
+}
+
+.notebox.danger {
+  border-color: red;
+  background-color: white;
+  font-weight: bold;
+}
