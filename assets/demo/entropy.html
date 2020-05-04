@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      text {
+        font-family: Optima, Futura, sans-serif;
+        font-weight: bold;
+        font-size: 14px;
+        fill: teal;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="draw"></div>
+  </body>
+
+  <script>
+    var X = [];
+    for (var i = 0.001; i <= 1; i += 0.01) {
+      X.push(i);
+    }
+
+    // -log(P(x))
+    var self_info = function (x) {
+      return -Math.log(x + Number.EPSILON) / Math.log(2);
+    };
+
+    var coords = X.map((x, i) => [x, self_info(x)]);
+
+    var width =
+      Math.max(document.documentElement.clientWidth, window.innerWidth || 0) -
+      20;
+    var height =
+      Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -
+      20;
+    var padding = 30;
+
+    //Create SVG element
+    var svg = d3
+      .select("#draw")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    var tooltip = d3
+      .select("#draw")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("font-family", "Optima, Futura, sans-serif")
+      .style("font-weight", "bold")
+      .style("color", "teal")
+      .text("");
+
+    var xmin = d3.min(coords, function (coord) {
+      return coord[0];
+    });
+
+    var xmax = d3.max(coords, function (coord) {
+      return coord[0];
+    });
+
+    var ymin = d3.min(coords, function (coord) {
+      return coord[1];
+    });
+
+    var ymax = d3.max(coords, function (coord) {
+      return coord[1];
+    });
+
+    // Create x,y scale
+    var xScale = d3
+      .scaleLinear()
+      .domain([xmin, xmax])
+      .range([padding, width - padding])
+      .nice();
+
+    var yScale = d3
+      .scaleLinear()
+      .domain([ymin, ymax])
+      .range([height - padding, padding])
+      .nice();
+
+    var xAxis = d3.axisBottom().scale(xScale);
+    var yAxis = d3.axisLeft().scale(yScale);
+
+    //Create line
+    var line = d3
+      .line()
+      .x(function (coord) {
+        return xScale(coord[0]);
+      })
+      .y(function (coord) {
+        return yScale(coord[1]);
+      });
+    svg
+      .append("path")
+      .datum(coords)
+      .attr("class", "line")
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 2.5)
+      .attr("d", line);
+
+    //Create circles
+    svg
+      .selectAll("circle")
+      .data(coords)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) {
+        return xScale(d[0]);
+      })
+      .attr("cy", function (d) {
+        return yScale(d[1]);
+      })
+      .attr("r", function (d) {
+        return 3;
+      })
+      .on("mouseover", function () {
+        return tooltip.style("visibility", "visible");
+      })
+      .on("mousemove", function (d) {
+        return tooltip
+          .style("top", d3.event.pageY - 10 + "px")
+          .style("left", d3.event.pageX + 10 + "px")
+          .text(d[1].toFixed(2));
+      })
+      .on("mouseout", function () {
+        return tooltip.style("visibility", "hidden");
+      });
+
+    // create x-axis
+    svg
+      .append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + (height - padding) + ")")
+      .call(xAxis);
+
+    // create y-axis
+    svg
+      .append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(" + padding + ",0)")
+      .call(yAxis);
+  </script>
+</html>
