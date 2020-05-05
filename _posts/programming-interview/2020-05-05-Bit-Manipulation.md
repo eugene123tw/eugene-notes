@@ -14,7 +14,6 @@ tags:
   * Know fast ways to **clear the lowermost set bit** (and by extension, set the lowermost  0, get it's index, etc)
   * Understanding signedness and its implications to **shifting**
   * Consider using a **cache** to accelerate operations by using it to brute-force small inputs
-  * 
 
 <!--more-->
 
@@ -47,10 +46,10 @@ AND takes two equal-length bit patterns. If both bits in the compared position o
 For example:
 
 ```
- A: 0000 0011 = 3
-&B: 0000 0010 = 2
-----------------------------
-    0000 0010 = 2
+ A: 0011 = 3
+&B: 0010 = 2
+-------------
+    0010 = 2
 ```
 
 From result `0010`, we know the second bit in the original pattern was set. This is often called bit **masking**. (In this case, the `0` values mask the bits that are not of interest). This operator can help us locate intersected bits between 2 patterns.
@@ -59,23 +58,23 @@ From result `0010`, we know the second bit in the original pattern was set. This
 Because of the previous property, it becomes easy to check the [parity] of a binary number by using a mask equals to 1. 
 
 ```
- A: 0000 0011 = 3
-&M: 0000 0001 = 1
-----------------------------
-    0000 0001 = 1
+ A: 0011 = 3
+&M: 0001 = 1
+-------------
+    0001 = 1
 ```
-Because `3` AND mask (`M=1`) is one, which means `3` is not divisible by two and therefore odd.
+Because `3 & 1` is one, which means `3` is not divisible by two and therefore odd.
 
 Let's look another example with even number `6`:
 
 ```
- A: 0000 0110 = 6
-&M: 0000 0001 = 1
-----------------------------
-    0000 0000 = 0
+ A: 0110 = 6
+&M: 0001 = 1
+-------------
+    0000 = 0
 ```
 
-Because `6` AND mask (`M=1`) is zero, which means `6` is divisible by two and therefore even.
+Because `6 & 1` is zero, which means `6` is divisible by two and therefore even.
 
 [Parity]: https://en.wikipedia.org/wiki/Parity_(mathematics)
 
@@ -84,10 +83,10 @@ Because `6` AND mask (`M=1`) is zero, which means `6` is divisible by two and th
   * Returns each bit of the output 0 if the corresponding bit of `x` AND of `y` is `0`, otherwise it's `1`.
 
 ```
- A: 0000 0011 = 3
-|B: 0000 0010 = 2
-----------------------------
-    0000 0011 = 3
+ A: 0011 = 3
+|B: 0010 = 2
+-------------
+    0011 = 3
 ```
 
 ## NOT `~` Operator
@@ -108,24 +107,23 @@ Invert: 1111 1111 1111 1110 = -2 (in two's complement representation)
 Bitwise XOR also takes two equal-length bit patterns. If both bits in the compared position of the bit patterns are 0 or 1, the bit in the resulting bit pattern is 0, otherwise 1.  
 
 ```
- A: 0000 0101 
-^B: 0000 0011
-----------------------------
-    0000 0110 
+ A: 0101 
+^B: 0011
+---------
+    0110 
 ```
 
 ```
  A: 0101 
 ^B: 1010
-----------------------------
+---------
     0000
 ```
 
-> ref:  
-> https://en.wikipedia.org/wiki/Two%27s_complement  
-> https://zh.wikipedia.org/wiki/%E4%BA%8C%E8%A3%9C%E6%95%B8  
-> https://stackoverflow.com/questions/7278779/bit-wise-operation-unary-invert  
-> https://stackoverflow.com/questions/14326900/how-does-c-do-bitwise-or-operations-on-negative-numbers
+#### References:  
+* https://en.wikipedia.org/wiki/Two%27s_complement
+* https://zh.wikipedia.org/wiki/%E4%BA%8C%E8%A3%9C%E6%95%B8  
+* https://stackoverflow.com/questions/7278779/bit-wise-operation-unary-invert  
 
 
 ## Left Shifts `<<` operator
@@ -133,7 +131,7 @@ Bitwise XOR also takes two equal-length bit patterns. If both bits in the compar
 * Syntax: `x << y`: 
   * This returns `x` with the bits shifted to the left by `y` places (and new bits on the right-hand-side are zeros). This is the same as **multiplying** `x` by `2**y`.
 
-For example, shift `x=26` 1 bit to the left (`y=1`), and shift 1 bit left again from the previous result.
+For example, shift `26` one bit to the left, and shift one bit left again from the previous shifted result.
 ```
 >>> 26 << 1, 26 << 1 << 1
 Origin: 0001 1010 = 26 
@@ -143,10 +141,10 @@ Origin: 0001 1010 = 26
 
 ## Right Shifts `>>` operator
 
-* Syntax: `x << y`: 
+* Syntax: `x >> y`: 
   * This returns `x` with the bits shifted to the right by `y` places (and new bits on the left-hand-side are zeros). This is the same as **dividing** `x` by `2**y`.
 
-For example, shift `x=26` 1 bit to the right (`y=1`)
+For example, shift `104` one bit to the right, and shift one bit right again from the previous shifted result.
 ```
 >>> 104 >> 1, 104 >> 1 >> 1
 Origin: 0110 1000 = 104
@@ -155,59 +153,60 @@ Origin: 0110 1000 = 104
 ```
 As you can see we are back at 26 again! 
 
+
 ## Common usages
 
 ### Get Bit
 * Syntax `(x & (1 << y)) != 0`:
-  * Returns the `y+1`th bit you would like to get from `x`
-    * `(1 << y)` creates a mask 1 located at `y+1`
-    * Then mask `y+1`th bit with the mask we created above of `x` with `&` operator
-    * This returns True if `y+1`th bit is 1, otherwise 0 
+  * Returns the `y+1`th bit from `x`
+    * `(1 << y)` creates a mask with `1` located at `y+1`
+    * Perform `&` operation on `x` with the mask we created above 
+    * Result returns `True` if the `y+1`th bit is 1, otherwise `False`
 
-For example, get the 1st bit (`y=0`) of value 7 (`x=7`) (syntax: `(7 & (1 << 0)) != 0`): 
-```
-Origin: 0000 0111
-     &
-1 << 0: 0000 0001 
-----------------------------
-        0000 0001 
+For example, get the 1st bit (`y:0`) of value 7 (`x:7`): 
+``` 
+>>> (7 & (1 << 0)) != 0
+         x: 0111
+& (1 << 0): 0001 
+-----------------
+            0001 
 ```
 
-For example, get the 2nd bit (`y=1`) of value 7 (`x=7`) (syntax: `(7 & (1 << 1)) != 0`): 
+For example, get the 2nd bit (`y:1`) of value 7 (`x:7`): 
 ```
-Origin: 0000 0111
-     &
-1 << 1: 0000 0010 
-----------------------------
-        0000 0010 
+>>> (7 & (1 << 1)) != 0
+         x: 0111
+& (1 << 1): 0010 
+-----------------
+            0010 
 ```
 
 ### Set Bit
 * Syntax `x | (1 << y)`:
   * Set the `y+1`th bit to 1 to `x`
-    * `(1 << y)` creates a mask 1 located at `y+1`
-    * Then set `y+1`th bit with the mask we created above of on `x` with `|` operator
+    * `(1 << y)` creates a mask with 1 located at `y+1`
+    * Perform `|` operation on `x` with the mask we created above 
 
-For example, set the 4th bit (`y=3`) of value 7 (`x=7`) (syntax: `7 | (1 << 3)`): 
+For example, set the 4th bit (`y:3`) of value 7 (`x:7`): 
 ```
-Origin: 0000 0111 = 7
-     |
-1 << 3: 0000 1000 
-----------------------------
-        0000 1111 = 15
+>>> 7 | (1 << 3)
+        x: 0111
+|(1 << 3): 1000 
+----------------
+           1111
 ```
 
 ### Clear Bit
 * Syntax `x & ~(1 << y)`:
   * Clear the `y+1`th bit of `x`
-    * `(1 << y)` creates a mask 1 located at `y+1`, then invert the mask with XOR
-    * Then clear `y+1`th bit with the mask we created above of `x` with `&` operator
+    * `(1 << y)` creates a mask 1 located at `y+1`, then invert the mask with XOR -- `~(1 << y)`
+    * Perform `&` operation on `x` with the mask we created above 
 
-For example, set the 4th bit (`y=3`) of value 7 (`x=7`) (syntax: `7 | (1 << 3)`): 
+For example, set the 1th bit (`y:0`) of value 7 (`x:7`): 
 ```
-Origin: 0000 0111 = 7
-     |
-1 << 3: 0000 1000 
-----------------------------
-        0000 1111 = 15
+>>> 7 & ~(1 << 0)
+          x: 0111
+& ~(1 << 0): 1110 
+------------------
+             0110
 ```
