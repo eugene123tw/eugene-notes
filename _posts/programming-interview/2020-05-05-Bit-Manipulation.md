@@ -235,7 +235,7 @@ For example, set the 4th bit (`y:3`) of value 7 (`x:7`):
     - `(1 << y)` creates a mask 1 located at `y+1`, then invert the mask with XOR -- `~(1 << y)`
     - Perform `&` operation on `x` with the mask we created above
 
-For example, set the 1th bit (`y:0`) of value 7 (`x:7`):
+For example, clear the 1st bit (`y:0`) of value 7 (`x:7`):
 
 ```
 >>> 7 & ~(1 << 0)
@@ -257,6 +257,20 @@ For example,
 &  (x-1): 0010 1011
 --------------------
           0010 1000
+```
+
+### Get the lowest bit
+
+- Syntax: `x & ~(x-1)`
+
+For example, get the lowest bit of 44:
+
+```
+>>> 44 & ~43
+       x: 0010 1100
+& ~(x-1): 1101 0100
+--------------------
+          0000 0100
 ```
 
 As you can see the lowest bit of `0010 1100` is now clear!
@@ -309,7 +323,17 @@ def parity_word(x: int) -> int:
 
 ## Method 3 - Lookup table:
 
-`11 10 10 10` mask size = 2
+One way to improve performance processing large number of words is to utilize lookup table.
+Obviously it's impossible to cache parity value of all 64-bit integer. However, we can group bits into four non-overlapping 16-bit sub-words, computing the parity of each sub-words, and then computing the parity of these four sub-results.
+
+We would build a **lookup table** for 2-bit word:
+
+```
+    lookup: [ 0,    1,   1,    0]
+2-bit word: (00), (01), (10), (11)
+```
+
+The lookup table caches the parity value `[0,1,1,0]` of `[0b00, 0b01, 0b10, 0b11]`, respectively. Another case would be to compute the parity of `11101010`, we break up the word every 2-bit as `(11)`, `(10)`, `(10)` and `(10)`, then fetch the parity of these 4 2-bit word from the lookup -- this would be `[0,1,1,1]`, we then compute the parity using $$ 0 \oplus 1 \oplus 1 \oplus 1 = 1 $$.
 
 # 4.3 Reverse bits
 
