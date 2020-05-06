@@ -326,7 +326,7 @@ def parity(x: int) -> int:
 One way to improve performance processing large number of words is to utilize lookup table.
 Obviously it's impossible to cache parity value of all 64-bit integer. However, we can group bits into four non-overlapping 16-bit sub-words, computing the parity of each sub-words, and then computing the parity of these four sub-results.
 
-### Build lookup table
+### Lookup Concept
 
 We would build a **lookup table** for 2-bit word:
 
