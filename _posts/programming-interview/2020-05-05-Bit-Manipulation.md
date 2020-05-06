@@ -288,7 +288,7 @@ The XOR (`^`) tells us that if both bits in the compared position of the bit pat
 the bit in the resulting bit pattern is 0. We will use the property of XOR to count the number of 1s in a binary word.
 
 ```python
-def parity_word(x: int) -> int:
+def parity(x: int) -> int:
   result = 0  # cache
   while x:
     result ^= x & 1
@@ -302,7 +302,7 @@ The time complexity is $$ O(n) $$, where $$ n $$ is the word size. The first imp
 ## Method 2:
 
 ```python
-def parity_word(x: int) -> int:
+def parity(x: int) -> int:
   result = 0
   while x:
     result ^= 1
@@ -311,7 +311,7 @@ def parity_word(x: int) -> int:
 ```
 
 - Note:
-  - We create `result` and initialize as zero, we then use this to determine if the ward has odd or even number of 1s.
+  - We create `result` and initialize as zero, we then use this to determine if the word has odd or even number of 1s.
   ```python
     result = 0
     while x:
@@ -319,12 +319,14 @@ def parity_word(x: int) -> int:
       x >>= 1
     return result
   ```
-  - Deduction: $$ 0 \oplus A \oplus B \oplus C \oplus D \oplus E $$ returns 1 iff the ward has odd number of 1s.
+  - We basically codelyzed $$ 0 \oplus A \oplus B \oplus C \oplus D \oplus E ... $$. This formula returns 1 iff the word has odd number of 1s.
 
 ## Method 3 - Lookup table:
 
 One way to improve performance processing large number of words is to utilize lookup table.
 Obviously it's impossible to cache parity value of all 64-bit integer. However, we can group bits into four non-overlapping 16-bit sub-words, computing the parity of each sub-words, and then computing the parity of these four sub-results.
+
+### Build lookup table
 
 We would build a **lookup table** for 2-bit word:
 
@@ -333,12 +335,31 @@ We would build a **lookup table** for 2-bit word:
 2-bit word: (00), (01), (10), (11)
 ```
 
-The lookup table caches the parity value `[0,1,1,0]` of `[0b00, 0b01, 0b10, 0b11]`, respectively. Another case would be to compute the parity of `11101010`, we break up the word every 2-bit as `(11)`, `(10)`, `(10)` and `(10)`, then fetch the parity of these 4 2-bit word from the lookup -- this would be `[0,1,1,1]`, we then compute the parity using $$ 0 \oplus 1 \oplus 1 \oplus 1 = 1 $$.
+The lookup table caches the parity value `[0,1,1,0]` of `[0b00, 0b01, 0b10, 0b11]`, respectively. Another case would be to compute the parity of `11101010`, we break up the word every 2-bit as `(11)`, `(10)`, `(10)` and `(10)` -- sub-words, then fetch the parity of these 4 sub-words from the lookup -- this would be `[0,1,1,1]` (sub-results), we then compute the parity of the sub-results with $$ 0 \oplus 1 \oplus 1 \oplus 1 = 1 $$.
+
+### Implementation
+
+We know how to build a lookup table, but we still need to know how to shift bits, so we could mask the first 2-bit with `&` to form a sub-word. Follow the previous example `11101010`, we first right shift `6` bit to get `00000011`, then `&` with `00000011`. We then shift `4` bit to get `00001110`, then mask with `00000011` again till we reach the final 2 bit.
+
+```python
+## BUILD LOOKUP TABLE WITH METHOD-1: def parity
+LOOKUP =  [0,1,1,0]
+for i in range(65536):
+  LOOKUP.append(parity(i))
+
+def parity(x: int) -> int:
+  mask_size = 16
+  mask = 0xFFFF
+  return (LOOKUP[(x >> (3 * mask_size)) & mask] ^  # subword 1st item
+    LOOKUP[(x >> (2 * mask_size)) & mask] ^ # subword 2nd item
+    LOOKUP[(x >> (mask_size)) & mask] ^ # subword 3rd item
+    LOOKUP[x & mask]) # subword 4th item
+```
 
 # 4.3 Reverse bits
 
-Write a programme that takes a 64-bit unsigned integer and returns the 64-bit unsigned integer consisting of the bits of the input in reverse order. For example, if the input is `1110 0000 0000 0001`, the output should be `1000 0000 0000 0111`.
+## WIP
 
-```python
+# 4.8 Rectangle Intersection
 
-```
+## WIP
