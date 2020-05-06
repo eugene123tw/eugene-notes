@@ -18,7 +18,7 @@ tags:
 
 <!--more-->
 
-## Some useful debug functions
+## Some useful debug functions in Python
 
 - Convert an integer number to a binary string prefixed with “0b”. Some examples:
 
@@ -273,7 +273,7 @@ For example, get the lowest bit of 44:
           0000 0100
 ```
 
-As you can see the lowest bit of `0010 1100` is now clear!
+As you can see the lowest bit of `0010 1100` is `0000 0100`!
 
 # 4.1 Computing the parity of a word
 
