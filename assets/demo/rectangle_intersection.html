@@ -1,112 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <style>
-      #subdivision {
-        position: auto;
-        top: 20px;
-        left: 20px;
-      }
-    </style>
-  </head>
 
-  <div id="subdivision"></div>
-
-  <script>
-    var intersection_over_union = function (r1, r2) {
-      var b1 = [r1.x, r1.y, r1.x + r1.width, r1.y + r1.height];
-      var b2 = [r2.x, r2.y, r2.x + r2.width, r2.y + r2.height];
-      var xmin = Math.max(b1[0], b2[0]);
-      var xmax = Math.min(b1[2], b2[2]);
-      var ymin = Math.max(b1[1], b2[1]);
-      var ymax = Math.min(b1[3], b2[3]);
-      var interArea =
-        Math.max(0, xmax - xmin + 1) * Math.max(0, ymax - ymin + 1);
-      return { x: xmin, y: ymin, width: xmax - xmin, height: ymax - ymin };
-    };
-
-    // Create Event Handlers for mouse
-    function handleMouseOver(e) {
-      console.log(e);
-      d3.select("#union").attr("fill", "red");
-      d3.select("#union").raise();
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    #subdivision {
+      position: auto;
+      top: 20px;
+      left: 20px;
     }
 
-    function handleMouseOut(e) {
-      console.log(e);
-      d3.select("#union").attr("fill", "none");
-      d3.select("#union").lower();
+    * {
+      box-sizing: border-box;
     }
+  </style>
+</head>
 
-    var width = 500;
-    var height = 400;
-    var padding = 30;
+<div id="subdivision"></div>
 
-    // [76, 9, 12, 14] [20, 1, 62, 60] -> [76, 9, 6, 14]
-    var r1 = {
-      x: 76, // top-left x
-      y: 9, // top-left y
-      width: 12,
-      height: 14,
+<script>
+  var intersection_over_union = function (r1, r2) {
+    var b1 = [r1.x, r1.y, r1.x + r1.width, r1.y + r1.height];
+    var b2 = [r2.x, r2.y, r2.x + r2.width, r2.y + r2.height];
+    var xmin = Math.max(b1[0], b2[0]);
+    var xmax = Math.min(b1[2], b2[2]);
+    var ymin = Math.max(b1[1], b2[1]);
+    var ymax = Math.min(b1[3], b2[3]);
+    var interArea =
+      Math.max(0, xmax - xmin + 1) * Math.max(0, ymax - ymin + 1);
+    return {
+      x: xmin,
+      y: ymin,
+      width: xmax - xmin,
+      height: ymax - ymin
     };
+  };
 
-    var r2 = {
-      x: 20, // top-left x
-      y: 1, // top-left y
-      width: 62,
-      height: 60,
-    };
+  // Create Event Handlers for mouse
+  function handleMouseOver() {
+    d3.select("#union").attr("fill", "#df465a");
+  }
 
-    var iou = intersection_over_union(r1, r2);
+  function handleMouseOut() {
+    d3.select("#union").attr("fill", "#ffc107");
+  }
 
-    //Create SVG element
-    xmax = d3.max([r1.x + r1.width, r2.x + r2.width]);
-    ymax = d3.max([r1.y + r1.height, r2.y + r2.height]);
-    ratio_max = d3.max([xmax, ymax]);
+  var width = 500;
+  var height = 400;
+  var padding = 30;
 
-    var _scale = d3
-      .scaleLinear()
-      .domain([0, ratio_max])
-      .range([0, d3.max([width, height])])
-      .nice();
+  // [76, 9, 12, 14] [20, 1, 62, 60] -> [76, 9, 6, 14]
+  var r1 = {
+    x: 76, // top-left x
+    y: 9, // top-left y
+    width: 12,
+    height: 14,
+  };
 
-    var svg = d3
-      .select("#subdivision")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("fill", "none");
+  var r2 = {
+    x: 20, // top-left x
+    y: 1, // top-left y
+    width: 62,
+    height: 60,
+  };
 
-    svg
-      .append("rect")
-      .attr("x", _scale(r1.x))
-      .attr("y", _scale(r1.y))
-      .attr("width", _scale(r1.width))
-      .attr("height", _scale(r1.height))
-      .attr("stroke", "green");
+  var iou = intersection_over_union(r1, r2);
 
-    svg
-      .append("rect")
-      .attr("x", _scale(r2.x))
-      .attr("y", _scale(r2.y))
-      .attr("width", _scale(r2.width))
-      .attr("height", _scale(r2.height))
-      .attr("stroke", "red");
+  //Create SVG element
+  xmax = d3.max([r1.x + r1.width, r2.x + r2.width]);
+  ymax = d3.max([r1.y + r1.height, r2.y + r2.height]);
+  ratio_max = d3.max([xmax, ymax]);
 
-    svg
-      .append("rect")
-      .attr("id", "union")
-      .attr("x", _scale(iou.x))
-      .attr("y", _scale(iou.y))
-      .attr("width", _scale(iou.width))
-      .attr("height", _scale(iou.height));
+  var _scale = d3
+    .scaleLinear()
+    .domain([0, ratio_max])
+    .range([0, d3.max([width, height])])
+    .nice();
 
-    var union = document.getElementById("union");
-    union.addEventListener("mouseover", handleMouseOver);
-    union.addEventListener("mouseout", handleMouseOut);
-  </script>
+  var svg = d3
+    .select("#subdivision")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  svg
+    .append("rect")
+    .attr("x", _scale(r2.x))
+    .attr("y", _scale(r2.y))
+    .attr("width", _scale(r2.width))
+    .attr("height", _scale(r2.height))
+    .attr("stroke", "#343a40")
+    .attr("stroke-width", 3)
+    .attr("fill", '#6cca72');
+
+  svg
+    .append("rect")
+    .attr("x", _scale(r1.x))
+    .attr("y", _scale(r1.y))
+    .attr("width", _scale(r1.width))
+    .attr("height", _scale(r1.height))
+    .attr("stroke", "#343a40")
+    .attr("stroke-width", 3)
+    .attr("fill", '#6cca72')
+
+  svg
+    .append("rect")
+    .attr("id", "union")
+    .attr("x", _scale(iou.x))
+    .attr("y", _scale(iou.y))
+    .attr("width", _scale(iou.width))
+    .attr("height", _scale(iou.height))
+    .attr("fill", "#ffc107")
+    .on('mouseover', handleMouseOver)
+    .on('mouseout', handleMouseOut);
+</script>
+
 </html>
