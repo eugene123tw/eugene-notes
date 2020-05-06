@@ -307,6 +307,10 @@ def parity_word(x: int) -> int:
   ```
   - Deduction: $$ 0 \oplus A \oplus B \oplus C \oplus D \oplus E $$ returns 1 iff the ward has odd number of 1s.
 
+## Method 3 - Lookup table:
+
+`11 10 10 10` mask size = 2
+
 # 4.3 Reverse bits
 
 Write a programme that takes a 64-bit unsigned integer and returns the 64-bit unsigned integer consisting of the bits of the input in reverse order. For example, if the input is `1110 0000 0000 0001`, the output should be `1000 0000 0000 0111`.
