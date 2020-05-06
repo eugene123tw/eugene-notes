@@ -280,7 +280,7 @@ As you can see the lowest bit of `0010 1100` is `0000 0100`!
 The parity of a binary word is 1 if the number of 1s in the word is odd; otherwise, it is 0.
 
 For example, the parity value of `1011` is 1, because the total count of occurrences of 1s is 3 -- an odd number.
-And the parity value of `10001000` is 0, because the total count of occurrences of 1s is 2 -- an even number.
+And the parity value of `10001000` is 0, because the total count of occurrences of 1s is 2 -- an even number. [Solution Here](https://github.com/eugene123tw/EPIJudge/blob/master/epi_judge_python/parity.py)
 
 ## Method 1:
 
@@ -328,14 +328,14 @@ Obviously it's impossible to cache parity value of all 64-bit integer. However, 
 
 ### Lookup Concept
 
-We would build a **lookup table** for 2-bit word:
+First build a **lookup table** for 2-bit word:
 
 ```
     lookup: [ 0,    1,   1,    0]
 2-bit word: (00), (01), (10), (11)
 ```
 
-The lookup table caches the parity value `[0,1,1,0]` of `[0b00, 0b01, 0b10, 0b11]`, respectively. Another case would be to compute the parity of `11101010`, we break up the word every 2-bit as `(11)`, `(10)`, `(10)` and `(10)` -- sub-words, then fetch the parity of these 4 sub-words from the lookup -- this would be `[0,1,1,1]` (sub-results), we then compute the parity of the sub-results with $$ 0 \oplus 1 \oplus 1 \oplus 1 = 1 $$.
+The lookup table caches the parity value `[0,1,1,0]` of `[0b00, 0b01, 0b10, 0b11]`, respectively. Another case would be to compute the parity of `11101010`, we break up the word every 2-bit as `(11)`, `(10)`, `(10)` and `(10)` -- sub-words, then fetch the parity of these 4 sub-words from the lookup -- this becomes `[0,1,1,1]` (sub-results), we then compute the parity of the sub-results with $$ 0 \oplus 1 \oplus 1 \oplus 1 = 1 $$.
 
 ### Implementation
 
@@ -362,4 +362,8 @@ def parity(x: int) -> int:
 
 # 4.8 Rectangle Intersection
 
-## WIP
+Write a program which tests if 2 rectangles have a nonempty intersection. If the intersection is nonempty, return the rectangle formed by their intersection
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="{{ site.baseurl }}/assets/demo/rectangle_intersection.html"></iframe>    
+</div>
