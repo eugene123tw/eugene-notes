@@ -181,9 +181,9 @@ Origin: 0110 1000 = 104
 
 As you can see we are back at 26 again!
 
-## Common usages
+### Common usages
 
-### Get Bit
+#### Get Bit
 
 - Syntax `(x & (1 << y)) != 0`:
   - Returns the `y+1`th bit from `x`
@@ -211,7 +211,7 @@ For example, get the 2nd bit (`y:1`) of value 7 (`x:7`):
             0010
 ```
 
-### Set Bit
+#### Set Bit
 
 - Syntax `x | (1 << y)`:
   - Set the `y+1`th bit to 1 to `x`
@@ -228,7 +228,7 @@ For example, set the 4th bit (`y:3`) of value 7 (`x:7`):
            1111
 ```
 
-### Clear Bit
+#### Clear Bit
 
 - Syntax `x & ~(1 << y)`:
   - Clear the `y+1`th bit of `x`
@@ -245,7 +245,7 @@ For example, clear the 1st bit (`y:0`) of value 7 (`x:7`):
              0110
 ```
 
-### Clear the lowest bit
+#### Clear the lowest bit
 
 - Syntax: `x & (x-1)`
 
@@ -259,7 +259,7 @@ For example,
           0010 1000
 ```
 
-### Get the lowest bit
+#### Get the lowest bit
 
 - Syntax: `x & ~(x-1)`
 
@@ -275,14 +275,14 @@ For example, get the lowest bit of 44:
 
 As you can see the lowest bit of `0010 1100` is `0000 0100`!
 
-# 4.1 Computing the parity of a word
+## 4.1 Computing the parity of a word
 
 The parity of a binary word is 1 if the number of 1s in the word is odd; otherwise, it is 0.
 
 For example, the parity value of `1011` is 1, because the total count of occurrences of 1s is 3 -- an odd number.
 And the parity value of `10001000` is 0, because the total count of occurrences of 1s is 2 -- an even number. [Solution Here](https://github.com/eugene123tw/EPIJudge/blob/master/epi_judge_python/parity.py)
 
-## Method 1:
+### Method 1:
 
 The XOR (`^`) tells us that if both bits in the compared position of the bit patterns are 1,
 the bit in the resulting bit pattern is 0. We will use the property of XOR to count the number of 1s in a binary word.
@@ -293,13 +293,28 @@ def parity(x: int) -> int:
   while x:
     result ^= x & 1
     x = x >> 1  # right shift
-  # if result = 1, then x is parity
   return result
 ```
 
+#### Note
+
+We create `result` and initialize as zero, we then use this to determine if the bit word has odd or even number of 1s.
+
+```python
+result = 0
+while x:
+  result ^= 1
+  x >>= 1
+return result
+```
+
+We basically codelyzed $$ 0 \oplus A \oplus B \oplus C \oplus D \oplus E ... $$. This formula returns 1 iff the word has odd number of 1s.
+
+#### Analysis
+
 The time complexity is $$ O(n) $$, where $$ n $$ is the word size. The first improvements is based on erasing the lowest set bit using `x & (x-1)`, thereby achieve the best- and average-cases -- let $$ k $$ be the number of bits set to 1 in a particular word, the time complexity of the algorithm below is $$ O(k) $$.
 
-## Method 2:
+### Method 2:
 
 ```python
 def parity(x: int) -> int:
@@ -310,23 +325,12 @@ def parity(x: int) -> int:
   return result
 ```
 
-- Note:
-  - We create `result` and initialize as zero, we then use this to determine if the word has odd or even number of 1s.
-  ```python
-    result = 0
-    while x:
-      result ^= 1
-      x >>= 1
-    return result
-  ```
-  - We basically codelyzed $$ 0 \oplus A \oplus B \oplus C \oplus D \oplus E ... $$. This formula returns 1 iff the word has odd number of 1s.
-
-## Method 3 - Lookup table:
+### Method 3 - Lookup table:
 
 One way to improve performance processing large number of words is to utilize lookup table.
 Obviously it's impossible to cache parity value of all 64-bit integer. However, we can group bits into four non-overlapping 16-bit sub-words, computing the parity of each sub-words, and then computing the parity of these four sub-results.
 
-### Lookup Concept
+##### Lookup Concept
 
 First build a **lookup table** for 2-bit word:
 
@@ -337,7 +341,7 @@ First build a **lookup table** for 2-bit word:
 
 The lookup table caches the parity value `[0,1,1,0]` of `[0b00, 0b01, 0b10, 0b11]`, respectively. Another case would be to compute the parity of `11101010`, we break up the word every 2-bit as `(11)`, `(10)`, `(10)` and `(10)` -- sub-words, then fetch the parity of these 4 sub-words from the lookup -- this becomes `[0,1,1,1]` (sub-results), we then compute the parity of the sub-results with $$ 0 \oplus 1 \oplus 1 \oplus 1 = 1 $$.
 
-### Implementation
+##### Implementation
 
 We know how to build a lookup table, but we still need to know how to shift bits, so we could mask the first 2-bit with `&` to form a sub-word. Follow the previous example `11101010`, we first right shift `6` bit to get `00000011`, then `&` with `00000011`. We then shift `4` bit to get `00001110`, then mask with `00000011` again till we reach the final 2 bit.
 
@@ -356,17 +360,27 @@ def parity(x: int) -> int:
     LOOKUP[x & mask]) # subword 4th item
 ```
 
-# 4.3 Reverse bits
+## 4.3 Reverse bits
 
-## WIP
+### WIP
 
-# 4.8 Rectangle Intersection (Intersection over union)
+## 4.8 Rectangle Intersection (Intersection over union)
 
 Write a program which tests if 2 rectangles have a nonempty intersection. If the intersection is nonempty, return the rectangle formed by their intersection
 
 <div class="embed-responsive embed-responsive-16by9">
   <iframe class="embed-responsive-item" src="{{ site.baseurl }}/assets/demo/rectangle_intersection.html"></iframe>
 </div>
+
+The example I used for the above visualization:
+
+```
+left rectangle: [x:76, y:9, width:12, height:14],
+right rectangle: [x:20, y:1, width:62, height:60]
+union in yellow: [x:76, y:9, width:6, height:14]
+```
+
+### Implementation
 
 ```python
 
@@ -391,5 +405,21 @@ def intersect_rectangle(r1: Rect, r2: Rect) -> Rect:
             min(r1.x + r1.width, r2.x + r2.width) - max(r1.x, r2.x),
             min(r1.y + r1.height, r2.y + r2.height) - max(r1.y, r2.y),
         )
+    return Rect(0, 0, -1, -1)
+```
+
+I personally prefer this though:
+
+```python
+def intersect_rectangle(r1: Rect, r2: Rect) -> Rect:
+    b1 = [r1.x, r1.y, r1.x + r1.width, r1.y  + r1.height]
+    b2 = [r2.x, r2.y, r2.x + r2.width, r2.y  + r2.height]
+    xmin = max([b1[0], b2[0]])
+    xmax = min([b1[2], b2[2]])
+    ymin = max([b1[1], b2[1]])
+    ymax = min([b1[3], b2[3]])
+    interArea = max(0, xmax - xmin + 1) * max(0, ymax - ymin + 1)
+    if interArea > 0:
+        return Rect(xmin, ymin, xmax - xmin, ymax - ymin)
     return Rect(0, 0, -1, -1)
 ```
