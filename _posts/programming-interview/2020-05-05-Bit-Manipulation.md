@@ -360,10 +360,36 @@ def parity(x: int) -> int:
 
 ## WIP
 
-# 4.8 Rectangle Intersection
+# 4.8 Rectangle Intersection (Intersection over union)
 
 Write a program which tests if 2 rectangles have a nonempty intersection. If the intersection is nonempty, return the rectangle formed by their intersection
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe class="embed-responsive-item" src="{{ site.baseurl }}/assets/demo/rectangle_intersection.html"></iframe>    
+  <iframe class="embed-responsive-item" src="{{ site.baseurl }}/assets/demo/rectangle_intersection.html"></iframe>
 </div>
+
+```python
+
+Rect = collections.namedtuple('Rect', ('x', 'y', 'width', 'height'))
+
+def intersect_rectangle(r1: Rect, r2: Rect) -> Rect:
+    """ (x, y) indicates the coordinate of top-left corner
+
+    :param r1: Rect
+    :param r2: Rect
+    :return:
+    """
+
+    def is_intersect(r1: Rect, r2: Rect) -> bool:
+        return (r1.x + r1.width >= r2.x) and (r2.x + r2.width >= r1.x) and (r1.y + r1.height >= r2.y) and (
+                    r2.y + r2.height >= r1.y)
+
+    if is_intersect(r1, r2):
+        return Rect(
+            max(r1.x, r2.x),
+            max(r1.y, r2.y),
+            min(r1.x + r1.width, r2.x + r2.width) - max(r1.x, r2.x),
+            min(r1.y + r1.height, r2.y + r2.height) - max(r1.y, r2.y),
+        )
+    return Rect(0, 0, -1, -1)
+```
