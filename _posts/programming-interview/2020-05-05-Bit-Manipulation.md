@@ -368,7 +368,7 @@ def parity(x: int) -> int:
 
 Write a program which tests if 2 rectangles have a nonempty intersection. If the intersection is nonempty, return the rectangle formed by their intersection
 
-<div class="embed-responsive embed-responsive-16by9">
+<div class="embed-responsive embed-responsive-1by1">
   <iframe class="embed-responsive-item" src="{{ site.baseurl }}/assets/demo/rectangle_intersection.html"></iframe>
 </div>
 

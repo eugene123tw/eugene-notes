@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      #subdivision {
+        position: auto;
+        margin: auto;
+        width: 50%;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <div id="subdivision"></div>
+
+  <script>
+    var dutch_flag_partition = function (pivot_index, A) {
+      var counts = [0, 0, 0];
+      var B = [];
+      for (i of A) counts[i] += 1;
+      var begin = 0;
+      for (var i = 0; i < counts.length; i++) {
+        end = begin + counts[i];
+        B = B.concat(new Array(counts[i]).fill(i));
+      }
+      return B;
+    };
+
+    var data = [1, 0, 0, 1, 1, 2, 2, 0, 2];
+    var sorted = dutch_flag_partition(3, data);
+    var color_mapping = {
+      0: "red",
+      1: "white",
+      2: "blue",
+    };
+
+    // Create Event Handlers for mouse
+
+    function handleMouseOut() {
+      return tooltip.style("visibility", "hidden");
+    }
+
+    function handleMouseMove() {
+      return tooltip
+        .style("top", d3.event.pageY - 10 + "px")
+        .style("left", d3.event.pageX + 10 + "px");
+    }
+
+    var tooltip = d3
+      .select("#subdivision")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("font-family", "Optima, Futura, sans-serif")
+      .style("font-weight", "bold")
+      .style("color", "green")
+      .text("");
+
+    var width = 500;
+    var height = 150;
+    var padding = 30;
+
+    //Create SVG element
+    var _scale = d3
+      .scaleLinear()
+      .domain([0, 300])
+      .range([0, d3.max([width, height])])
+      .nice();
+
+    var svg = d3
+      .select("#subdivision")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    //Create rectangles
+    svg
+      .append("g")
+      .selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("x", _scale(0))
+      .attr("y", function (d, i) {
+        return _scale(i * 10);
+      })
+      .attr("width", _scale(100))
+      .attr("height", _scale(10))
+      .attr("stroke", "#343a40")
+      .attr("stroke-width", 2)
+      .on("mouseover", function (d) {
+        return tooltip.style("visibility", "visible").text(d);
+      })
+      .on("mouseout", handleMouseOut)
+      .on("mousemove", handleMouseMove)
+      .attr("fill", function (d) {
+        return color_mapping[d];
+      });
+
+    svg
+      .append("g")
+      .selectAll("rect")
+      .data(sorted)
+      .enter()
+      .append("rect")
+      .attr("x", _scale(130))
+      .attr("y", function (d, i) {
+        return _scale(i * 10);
+      })
+      .attr("width", _scale(100))
+      .attr("height", _scale(10))
+      .attr("stroke", "#343a40")
+      .attr("stroke-width", 2)
+      .attr("fill", function (d) {
+        return color_mapping[d];
+      })
+      .on("mouseover", function (d) {
+        return tooltip.style("visibility", "visible").text(d);
+      })
+      .on("mouseout", handleMouseOut)
+      .on("mousemove", handleMouseMove);
+  </script>
+</html>
