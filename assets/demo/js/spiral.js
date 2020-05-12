@@ -1,17 +1,18 @@
-var N = 4;
+var N = 3;
+var M = 4;
 
-function create_matrix(N) {
+function create_matrix(N, M) {
   var color_matrix = [];
   var color = d3.interpolateSpectral;
   var color_scale = d3
     .scaleLinear()
-    .domain([0, N * N])
+    .domain([0, N * M])
     .range([0.1, 1]);
 
   count = 0;
   for (var i = 0; i < N; i++) {
     row = [];
-    for (var j = 0; j < N; j++) {
+    for (var j = 0; j < M; j++) {
       row.push(color(color_scale(count)));
       count++;
     }
@@ -20,46 +21,53 @@ function create_matrix(N) {
   return color_matrix;
 }
 
-function matrix_in_spiral_order(matrix) {
-  var N = matrix.length;
-  var matrix_size = Math.pow(N, 2);
+function matrix_in_spiral_order(N, M) {
+  var matrix_size = N * M;
   var left_bound = 0;
-  var right_bound = N - 1;
-  var count = 0;
+  var right_bound = M - 1;
+  var bottom_bound = 0;
+  var top_bound = N - 1;
 
+  var count = 0;
   var row_shift = 0;
   var col_shift = 0;
   var row = 0;
   var col = 0;
   var spiral_coords = [];
+  var start_corner = [0, 0];
 
-  while (count < matrix_size) {
+  for (var i = 0; i < matrix_size; i++) {
+    spiral_coords.push([row + 1, col + 1]);
     if (col == right_bound) {
       row_shift = 1;
     } else if (col == left_bound) {
       row_shift = -1;
     }
 
-    if (row == right_bound) {
+    if (row == top_bound) {
       col_shift = -1;
-    } else if (row == left_bound) {
+    } else if (row == bottom_bound) {
       col_shift = 1;
     }
 
-    spiral_coords.push([row + 1, col + 1]);
-    if (((row + row_shift) < left_bound) | ((row + row_shift) > right_bound)) {
+    if ((row + row_shift < bottom_bound) | (row + row_shift > top_bound)) {
       row_shift = 0;
     }
-
-    if (((col + col_shift) < left_bound) | ((col + col_shift) > right_bound)) {
+    if ((col + col_shift < left_bound) | (col + col_shift > right_bound)) {
       col_shift = 0;
     }
-
-    if (((row + row_shift) == (col + col_shift)) & ((row + row_shift) != right_bound)) {
+    if (
+      (row + row_shift == start_corner[0]) &
+      (col + col_shift == start_corner[1])
+    ) {
+      start_corner[0] += 1;
+      start_corner[1] += 1;
       row_shift = 0;
       col_shift = 1;
       left_bound += 1;
       right_bound -= 1;
+      bottom_bound += 1;
+      top_bound -= 1;
     }
 
     row += row_shift;
@@ -69,14 +77,13 @@ function matrix_in_spiral_order(matrix) {
   return spiral_coords;
 }
 
+var color_matrix = create_matrix(N, M);
 
-var color_matrix = create_matrix(N);
-
-var spiral_coords = matrix_in_spiral_order(color_matrix)
+var spiral_coords = matrix_in_spiral_order(N, M);
 
 var coords = [];
-for (var i = 1; i <= color_matrix.length; i++) {
-  for (var j = 1; j <= color_matrix.length; j++) {
+for (var i = 1; i <= N; i++) {
+  for (var j = 1; j <= M; j++) {
     coords.push([i, j]);
   }
 }
@@ -109,7 +116,7 @@ var padding = 30;
 
 var _scale = d3
   .scaleLinear()
-  .domain([1, N + 1])
+  .domain([1, d3.max([N, M]) + 1])
   .range([padding, d3.max([width, height]) - padding])
   .nice();
 
@@ -120,15 +127,16 @@ var svg = d3
   .attr("height", height);
 
 //Create rectangles
-svg.selectAll("rect")
+svg
+  .selectAll("rect")
   .data(coords)
   .enter()
   .append("rect")
   .attr("x", function (d, i) {
-    return _scale(coords[i][0]);
+    return _scale(coords[i][1]);
   })
   .attr("y", function (d, i) {
-    return _scale(coords[i][1]);
+    return _scale(coords[i][0]);
   })
   .attr("width", _scale(1.5))
   .attr("height", _scale(1.5))
@@ -136,17 +144,17 @@ svg.selectAll("rect")
     return color_matrix[coords[i][0] - 1][coords[i][1] - 1];
   });
 
-// create circles 
+// create circles
 svg
   .selectAll("circle")
   .data(coords)
   .enter()
   .append("circle")
   .attr("cx", function (d, i) {
-    return _scale(coords[i][0] + 0.5);
+    return _scale(coords[i][1] + 0.5);
   })
   .attr("cy", function (d, i) {
-    return _scale(coords[i][1] + 0.5);
+    return _scale(coords[i][0] + 0.5);
   })
   .attr("r", 3)
   .attr("fill", "black");
@@ -181,6 +189,6 @@ var repeat = () => {
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0)
     .on("end", repeat);
-}
+};
 
 repeat();
