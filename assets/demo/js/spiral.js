@@ -1,5 +1,5 @@
-var N = 3;
-var M = 4;
+var N = 4;
+var M = 5;
 
 function create_matrix(N, M) {
   var color_matrix = [];
@@ -22,57 +22,45 @@ function create_matrix(N, M) {
 }
 
 function matrix_in_spiral_order(N, M) {
-  var matrix_size = N * M;
-  var left_bound = 0;
-  var right_bound = M - 1;
-  var bottom_bound = 0;
-  var top_bound = N - 1;
+  var matrix = new Array(N);
+  for (i = 0; i < N; i++) matrix[i] = new Array(M);
 
-  var count = 0;
-  var row_shift = 0;
-  var col_shift = 0;
+  for (var i = 0; i < N; i++) {
+    for (var j = 0; j < M; j++) {
+      matrix[i][j] = 1;
+    }
+  }
+
+  var matrix_size = N * M;
+  var width = M;
+  var height = N;
   var row = 0;
   var col = 0;
+  var direction = 0;
+  var shifts = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
+  ];
   var spiral_coords = [];
-  var start_corner = [0, 0];
 
   for (var i = 0; i < matrix_size; i++) {
     spiral_coords.push([row + 1, col + 1]);
-    if (col == right_bound) {
-      row_shift = 1;
-    } else if (col == left_bound) {
-      row_shift = -1;
-    }
-
-    if (row == top_bound) {
-      col_shift = -1;
-    } else if (row == bottom_bound) {
-      col_shift = 1;
-    }
-
-    if ((row + row_shift < bottom_bound) | (row + row_shift > top_bound)) {
-      row_shift = 0;
-    }
-    if ((col + col_shift < left_bound) | (col + col_shift > right_bound)) {
-      col_shift = 0;
-    }
+    matrix[row][col] = 0;
+    var next_row = row + shifts[direction][0];
+    var next_col = col + shifts[direction][1];
     if (
-      (row + row_shift == start_corner[0]) &
-      (col + col_shift == start_corner[1])
+      !(next_row in d3.range(height)) ||
+      !(next_col in d3.range(width)) ||
+      matrix[next_row][next_col] == 0
     ) {
-      start_corner[0] += 1;
-      start_corner[1] += 1;
-      row_shift = 0;
-      col_shift = 1;
-      left_bound += 1;
-      right_bound -= 1;
-      bottom_bound += 1;
-      top_bound -= 1;
+      direction = (direction + 1) % 4;
+      next_row = row + shifts[direction][0];
+      next_col = col + shifts[direction][1];
     }
-
-    row += row_shift;
-    col += col_shift;
-    count += 1;
+    row = next_row;
+    col = next_col;
   }
   return spiral_coords;
 }
