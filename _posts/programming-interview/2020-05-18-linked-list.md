@@ -40,7 +40,7 @@ def delete_after(node: ListNode) -> None:
 
 Create 2 pointers, a fast pointer advances with 2 steps and a slow pointer advances 1 step each iteration. If a cycle exists both pointers will eventually overlap, since the fast pointer will jump over the slow pointer, then the slow pointer will meet the fast pointer in the next step – imagine 2 athletes running on the track, the faster runner will eventually surpass a lap more than the slower runner.
 
-To find the first node on the cycle, we have to first find out the cycle length -- denoted as $$ C $$. We use two pointers, one point to `head` and the other pointer which is $$ C $$ ahead of `head`. We then advance them in tandem, and when they meet, the node **must** be the first node on the cycle.
+To find the first node on the cycle, we have to first find out the cycle length -- denoted as $$ C $$. We use two pointers, one point to `head` and the other point to the node that is $$ C $$ steps ahead of `head`. We then advance them in tandem, and when they meet, the node **must** be the first node on the cycle.
 
 ```python
 def has_cycle(head: ListNode) -> Optional[ListNode]:
