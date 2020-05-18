@@ -8,6 +8,28 @@ tags:
 
 <!--more-->
 
+## Addressing in Tensor: BCHW
+
+We could access a value of `at::Tensor` by using a pointer. Pytorch stores tensor in the format of BCHW like many other libraries.
+So, for a `1 x 3 x 1080 x 1920` tensor. The entry index of `[row: 192, col:15, channel: 2]` would be:
+
+```python
+>>> channels, height, width = 3, 1080, 1920
+>>> row, col, c = 192, 15, 2
+>>> index = c * height * width + row * width + col
+>>> index
+4515855
+```
+
+And, the opposite question, what is the exact channel, row, col of index: `4482044`?
+
+```python
+>>> channels, height, width = 3, 1080, 1920
+>>> index =
+```
+
+## Cross-correlation
+
 Cross-correlation: $$ S(i,j)=(I*K)(i,j)=\sum_{m} \sum_{n} I(i+m,j+n)K(m,n) $$
 
 Assume our input consists of observed data $$\boldsymbol{\mathsf{V}}$$ with element
