@@ -2,7 +2,6 @@
 title: A summary of Linked List
 published: true
 tags:
-  - Linked List
   - Programming Interview
   - Python
 ---

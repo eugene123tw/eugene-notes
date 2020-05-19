@@ -8,15 +8,15 @@ tags:
 
 <!--more-->
 
-## Addressing in Tensor: BCHW
+## Addressing in Tensor: CHW
 
-We could access a value of `at::Tensor` by using a pointer. Pytorch stores tensor in the format of BCHW like many other libraries.
-So, for a `1 x 3 x 1080 x 1920` tensor. The entry index of `[row: 192, col:15, channel: 2]` would be:
+We could access a value of `at::Tensor` by using a pointer. Pytorch stores tensor in the format of CHW like many other libraries.
+So, for a `3` layers, each with `1080` height and `1920` width tensor. The entry index of `[row: 192, col:15, channel: 2]` would be:
 
 ```python
 >>> channels, height, width = 3, 1080, 1920
->>> row, col, c = 192, 15, 2
->>> index = c * height * width + row * width + col
+>>> row, col, layer = 192, 15, 2
+>>> index = layer * height * width + row * width + col
 >>> index
 4515855
 ```
@@ -24,9 +24,26 @@ So, for a `1 x 3 x 1080 x 1920` tensor. The entry index of `[row: 192, col:15, c
 And, the opposite question, what is the exact channel, row, col of index: `4482044`?
 
 ```python
+>>> index = 4482044
 >>> channels, height, width = 3, 1080, 1920
->>> index =
+>>> layer = index//(height * width)
+>>> row = index % (height * width) // width
+>>> col = index % (height * width) % width
+>>> layer, row, col
 ```
+
+Joseph Redmon explains very well in his [Lecture 3](https://www.youtube.com/watch?v=hpqrDUuk7HY&list=PLjMXczUzEYcHvw5YYSU92WrY8IwhTuq7p&index=3) of The Ancient Secrets of Computer Vision.
+
+The sequence of storing values of a tensor goes from width, than height, and step to the next layer and repeat above steps. For an RGB image, CHW format stores the first row than on to the next row till all values in red channel were traversed, than onto the green channel, finally the blue channel.
+
+<div class="card mb-3">
+    <img class="card-img-top" src="{{site.baseurl}}/assets/img/2020-05-15-convolution-nn/chw_format.png"/>
+    <div class="card-body bg-light">
+        <div class="card-text">
+            Redmon, J., 2020. 03 - Computer Vision: Image Basics.
+        </div>
+    </div>
+</div>
 
 ## Cross-correlation
 
