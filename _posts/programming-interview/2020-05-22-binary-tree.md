@@ -12,6 +12,8 @@ A full binary tree is a binary tree in which **every node other than the leaves 
 
 <div id="full_binary_tree"></div>
 
+<!--more-->
+
 ## Perfect binary tree
 
 A perfect binary tree is a full binary tree in which **all leaves are at the same depth**, and in which every parent has two children.
