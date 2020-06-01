@@ -1,4 +1,6 @@
-export function Grid(
+export { Grid, CreateSVGRect, DownloadSVG };
+
+function Grid(
   height,
   width,
   rect_pixels = 10,
@@ -24,7 +26,7 @@ export function Grid(
   return grid;
 }
 
-export function CreateSVGRect(svg, data, id = "") {
+function CreateSVGRect(svg, data, id = "") {
   var square = svg.append("g");
 
   if (id) {
@@ -64,4 +66,20 @@ export function CreateSVGRect(svg, data, id = "") {
     })
     .attr("fill", "#DDF")
     .attr("stroke", "none");
+}
+
+function DownloadSVG(svgEl, name) {
+  svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  var svgData = svgEl.children[0].outerHTML;
+  var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+  var svgBlob = new Blob([preface, svgData], {
+    type: "image/svg+xml;charset=utf-8",
+  });
+  var svgUrl = URL.createObjectURL(svgBlob);
+  var downloadLink = document.createElement("a");
+  downloadLink.href = svgUrl;
+  downloadLink.download = name;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
 }

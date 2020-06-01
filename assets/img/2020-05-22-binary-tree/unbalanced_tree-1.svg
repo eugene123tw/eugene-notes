@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 185.72533 179.08275"
+   style="overflow:visible"
+   version="1.1"
+   id="svg96"
+   sodipodi:docname="unbalanced_tree-1.svg"
+   width="185.72533"
+   height="179.08275"
+   inkscape:version="1.0 (1.0+r73+1)">
+  <metadata
+     id="metadata102">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs100" />
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1853"
+     inkscape:window-height="1025"
+     id="namedview98"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.9627774"
+     inkscape:cx="112.73653"
+     inkscape:cy="100.03324"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg96" />
+  <g
+     font-family="sans-serif"
+     font-size="10px"
+     transform="translate(100.72533,12.190263)"
+     id="g94">
+    <g
+       fill="none"
+       stroke="#555555"
+       stroke-opacity="0.4"
+       stroke-width="1.5"
+       id="g18">
+      <path
+         d="M 0,0 C 0,25 -60,25 -60,50"
+         id="path2" />
+      <path
+         d="M 0,0 C 0,25 60,25 60,50"
+         id="path4" />
+      <path
+         stroke-opacity="0"
+         d="m -60,50 c 0,25 -20,25 -20,50"
+         id="path6" />
+      <path
+         d="m -60,50 c 0,25 20,25 20,50"
+         id="path8" />
+      <path
+         d="M 60,50 C 60,75 40,75 40,100"
+         id="path10" />
+      <path
+         stroke-opacity="0"
+         d="m 60,50 c 0,25 20,25 20,50"
+         id="path12" />
+      <path
+         stroke-opacity="0"
+         d="m -40,100 c 0,25 -20,25 -20,50"
+         id="path14" />
+      <path
+         d="m -40,100 c 0,25 20,25 20,50"
+         id="path16" />
+    </g>
+    <g
+       stroke-linejoin="round"
+       stroke-width="3"
+       id="g92">
+      <g
+         id="g26">
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           stroke="#ffffff"
+           id="text20">A</text>
+        <circle
+           fill="#555555"
+           r="5"
+           id="circle22"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           id="text24">A</text>
+      </g>
+      <g
+         transform="translate(-60,50)"
+         id="g34">
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           stroke="#ffffff"
+           id="text28">B</text>
+        <circle
+           fill="#555555"
+           r="5"
+           id="circle30"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           id="text32">B</text>
+      </g>
+      <g
+         transform="translate(60,50)"
+         id="g42">
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           stroke="#ffffff"
+           id="text36">C</text>
+        <circle
+           fill="#555555"
+           r="5"
+           id="circle38"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           id="text40">C</text>
+      </g>
+      <g
+         transform="translate(-80,100)"
+         id="g50">
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           stroke="#ffffff"
+           id="text44" />
+        <circle
+           fill="#ffffff"
+           r="5"
+           id="circle46"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           id="text48" />
+      </g>
+      <g
+         transform="translate(-40,100)"
+         id="g58">
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           stroke="#ffffff"
+           id="text52">D</text>
+        <circle
+           fill="#555555"
+           r="5"
+           id="circle54"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="-6"
+           text-anchor="end"
+           id="text56">D</text>
+      </g>
+      <g
+         transform="translate(40,100)"
+         id="g66">
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           stroke="#ffffff"
+           id="text60">F</text>
+        <circle
+           fill="#19692c"
+           r="5"
+           id="circle62"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           id="text64">F</text>
+      </g>
+      <g
+         transform="translate(80,100)"
+         id="g74">
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           stroke="#ffffff"
+           id="text68" />
+        <circle
+           fill="#ffffff"
+           r="5"
+           id="circle70"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           id="text72" />
+      </g>
+      <g
+         transform="translate(-60,150)"
+         id="g82">
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           stroke="#ffffff"
+           id="text76" />
+        <circle
+           fill="#ffffff"
+           r="5"
+           id="circle78"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           id="text80" />
+      </g>
+      <g
+         transform="translate(-20,150)"
+         id="g90">
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           stroke="#ffffff"
+           id="text84">E</text>
+        <circle
+           fill="#19692c"
+           r="5"
+           id="circle86"
+           cx="0"
+           cy="0" />
+        <text
+           dy="0.31em"
+           x="6"
+           text-anchor="start"
+           id="text88">E</text>
+      </g>
+    </g>
+  </g>
+  <ellipse
+     style="fill:none;fill-opacity:1;stroke:#dc72d6;stroke-width:1.65389;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:6.7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path927"
+     cx="55.281898"
+     cy="110.65171"
+     rx="54.454952"
+     ry="67.604088" />
+  <ellipse
+     style="fill:none;fill-opacity:1;stroke:#dc72d6;stroke-width:1.65921;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:6.7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path929"
+     cx="151.95866"
+     cy="89.307777"
+     rx="25.139166"
+     ry="41.686436" />
+  <ellipse
+     style="fill:none;fill-opacity:1;stroke:#dc72d6;stroke-width:1.65921;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:6.7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path931"
+     cx="101.47918"
+     cy="13.233507"
+     rx="17.129198"
+     ry="12.403902" />
+</svg>

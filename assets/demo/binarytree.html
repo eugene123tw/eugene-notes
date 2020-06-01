@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="/theme/js/jquery-3.4.1.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      #subdivision {
+        position: auto;
+        margin: auto;
+        width: 50%;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="subdivision"></div>
+  </body>
+
+  <script type="module">
+    import {
+      build_binary_tree,
+      tree_traversal,
+      tree_to_d3stratify,
+      CreateBinaryTreeGraph,
+    } from "/assets/demo/js/binarytree.js";
+
+    import { DownloadSVG } from "/assets/demo/js/svg_toolbox.js";
+
+    var width = 300;
+
+    // Tree Traverse
+    var symmetric_tree_root = d3.stratify()([
+      { id: "A" },
+      { id: "B", parentId: "A" },
+      { id: "C", parentId: "A" },
+      { id: "null", parentId: "B" },
+      { id: "D", parentId: "B" },
+      { id: "null", parentId: "D" },
+      { id: "E", parentId: "D" },
+      { id: "F", parentId: "C" },
+      { id: "null", parentId: "C" },
+      { id: "G", parentId: "F" },
+      { id: "null", parentId: "F" },
+    ]);
+
+    CreateBinaryTreeGraph(
+      symmetric_tree_root,
+      width,
+      $("#subdivision")[0],
+      40,
+      50
+    );
+    // DownloadSVG($("#subdivision")[0], "symmetric_tree.svg");
+  </script>
+</html>

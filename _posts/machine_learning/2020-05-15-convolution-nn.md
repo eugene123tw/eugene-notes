@@ -26,10 +26,11 @@ And, the opposite question, what is the exact channel, row, col of index: `44820
 ```python
 >>> index = 4482044
 >>> channels, height, width = 3, 1080, 1920
->>> layer = index//(height * width)
->>> row = index % (height * width) // width
->>> col = index % (height * width) % width
+>>> layer = index // width // height
+>>> row = (index // width) % height
+>>> col = index % width
 >>> layer, row, col
+(2, 174, 764)
 ```
 
 Joseph Redmon explains very well in his [Lecture 3](https://www.youtube.com/watch?v=hpqrDUuk7HY&list=PLjMXczUzEYcHvw5YYSU92WrY8IwhTuq7p&index=3) of The Ancient Secrets of Computer Vision.
@@ -45,6 +46,14 @@ The sequence of storing values of a tensor goes from width, than height, and ste
     </div>
 </div>
 
+<div class="card mb-3">
+    <img class="card-img-top" src="{{site.baseurl}}/assets/img/2020-05-15-convolution-nn/chw-2.png"/>
+    <div class="card-body bg-light">
+        <div class="card-text">
+            Redmon, J., 2020. 03 - Computer Vision: Image Basics.
+        </div>
+    </div>
+</div>
 ## Cross-correlation
 
 Cross-correlation: $$ S(i,j)=(I*K)(i,j)=\sum_{m} \sum_{n} I(i+m,j+n)K(m,n) $$
@@ -59,7 +68,7 @@ $$ Z_{i,j,k}=\sum_{l,m,n} V_{l,j+m-1,k+n-1} K_{i,l,m,n} $$
 </div>
 
 <script type="module">
-import { Grid, CreateSVGRect } from "/eugene-notes/assets/demo/js/toolbox.js";
+import { Grid, CreateSVGRect } from "/eugene-notes/assets/demo/js/svg_toolbox.js";
 
 var svg_height = 250;
 var svg_width = 900;
