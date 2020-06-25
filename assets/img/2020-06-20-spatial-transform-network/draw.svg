@@ -1,77 +1,3 @@
----
-title: Spatial Transform Network
-published: true
-tags:
-  - Computer Vision
-  - Deep Learning
----
-
-<div class="card mb-3">
-    <img class="card-img-top" src="{{ site.baseurl }}/assets/img/2020-06-20-spatial-transform-network/stn.png"/>
-    <div class="card-body bg-light">
-        <div class="card-text">
-            Spatial Transform Network
-        </div>
-    </div>
-</div>
-
-Spatial transformer networks are a generalization of differentiable attention to any spatial transformation. Spatial transformer networks (STN for short) allow a neural network to learn how to perform **spatial transformations** (such as rotation, scaling) on the input image in order to enhance the geometric invariance of the model. It can be a useful mechanism because CNNs are not invariant to rotation and scale and more general affine transformations.
-
-<!--more-->
-
-### Localisation Network
-
-The architecture of a spatial transformer module. The input feature map $$ U \in \mathbb{R}^{H \times W \times C} $$ is passed to a localisation network $$ f_{\text{loc}} $$ which regresses the transformation parameters $$ \theta $$, the parameters of the transformation $$  \mathcal{T}_{\theta} $$ to be applied to the feature map: $$ \theta = f_{\text{loc}}(U) $$. The localisation network function $$ f_{\text{loc}}() $$ can take any form, such as a fully-connected network or a convolutional network, but should include a final regression layer to produce the transformation parameters $$ \theta $$.
-
-### Parameterised Sampling Grid
-
-To perform a warping of the input feature map, each output pixel (value) is computed by applying a sampling kernel centered at a particular location in the input feature map. In general, the output pixels are defined to lie on a regular grid $$ G = \{G_{i}\} $$ of pixels $$ G_{i} = (x^{t}_{i}, y^{t}_{i}) $$ -- $$ t $$ indicates as _target_, forming an output feature map $$ V \in \mathbb{R}^{H' \times W' \times C} $$.
-
-$$
-\begin{pmatrix}
-x_{i}^{s} \\
-y_{i}^{s}
-\end{pmatrix} = \mathcal{T}_{\theta}(G_{i}) =
-
-\begin{bmatrix}
-\theta_{11} & \theta_{12} & \theta_{13} \\
-\theta_{21} & \theta_{22} & \theta_{23}
-\end{bmatrix} \begin{pmatrix}
-x_{i}^{t} \\
-y_{i}^{t} \\
-1
-\end{pmatrix}
-$$
-
-, where $$ (x^{t}_{i}, y^{t}_{i}) $$ are the target coordinates of the regular grid in the output feature map, $$ (x^{s}_{i}, y^{s}_{i}) $$ are the source coordinates in the input feature map. We use height and width normalised coordinates, such that $$ −1 \leq x_{i}^{t}, y_{i}^{t} \leq 1 $$ when within the spatial bounds of the output, and $$ −1 \leq x_{i}^{s}, y_{i}^{s} \leq 1 $$ when within the spatial bounds of the input.
-
-Assume input images $$ U $$ and output images $$ V $$ have the same dimensions of $$ H \times W \times 1 $$. The regular grid $$ G $$ of $$ V $$ is normalized from $$ 0 \leq x_{i}^{t}, y_{i}^{t} \leq H $$ to $$ -1 \leq x_{i}^{t}, y_{i}^{t} \leq 1 $$
-
-$$
-\begin{bmatrix}
-(0, 0) & \cdots & (W, 0) \\
-  \vdots & (W/2, H/2)  &  \vdots \\
-(0, H) & \cdots & (W, H)
-\end{bmatrix} \rightarrow
-
-\begin{bmatrix}
-(-1, -1) & \cdots & (1, -1) \\
-  \vdots & (0, 0)  &  \vdots \\
-(-1, 1) & \cdots & (1, 1)
-\end{bmatrix}
-$$
-
-The normalized regular grid can be generated with `np.linspace` and `np.meshgrip`
-
-```python
-x_t = np.linspace(-1, 1, width)
-y_t = np.linspace(-1, 1, height)
-x_t, y_t = np.meshgrid(x_t, y_t)
-```
-
-Since we've normalized the grid to $$ (-1, 1) $$, we need a linear interpolation function to map the normalized grid to the original grid $$ (0, H), (0, W) $$. Doing so, we could get any value from $$ (x_{i}^{t}, y_{i}^{t}) $$ or $$ (x_{i}^{s}, y_{i}^{s}) $$ by plugin it to the interpolation function.
-
-<div class="d-flex justify-content-center m-5">
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -358,151 +284,63 @@ Since we've normalized the grid to $$ (-1, 1) $$, we need a linear interpolation
      cx="376.28186"
      id="path1967-3-6"
      style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.99975;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-  <text font-size="8" x="240" y="187.68913"> $ (x^{t}, x) $ </text>
-  <text font-size="8" x="388.44168" y="50"> $ (1, W) $ </text>
-  <text font-size="8" x="44.416748" y="272.34808"> $ (-1, 0) $ </text>
-  <text font-size="8" x="410" y="280"> $ X^{t} \in (-1, 1) $ </text>
-  <text font-size="8" x="205.23595" y="28.748047"> $ X \in (0, W) $ </text>
+  <text
+     xml:space="preserve"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     x="226.54303"
+     y="187.68913"
+     id="text2129-7"><tspan
+       sodipodi:role="line"
+       id="tspan2127-5"
+       x="226.54303"
+       y="187.68913"
+       style="stroke-width:0.75">B</tspan></text>
+  <text
+     id="text2129-7-3"
+     y="58.386234"
+     x="388.44168"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     xml:space="preserve"><tspan
+       style="stroke-width:0.75"
+       y="58.386234"
+       x="388.44168"
+       id="tspan2127-5-5"
+       sodipodi:role="line">C</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.75"
+     x="44.416748"
+     y="272.34808"
+     id="text895"><tspan
+       sodipodi:role="line"
+       id="tspan893"
+       x="44.416748"
+       y="272.34808"
+       style="stroke-width:0.75">A</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.75"
+     x="425.0679"
+     y="302.95398"
+     id="text899"><tspan
+       sodipodi:role="line"
+       id="tspan897"
+       x="425.0679"
+       y="302.95398"
+       style="stroke-width:0.75">D</tspan></text>
+  <text
+     id="text899-3"
+     y="28.748047"
+     x="205.23595"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     xml:space="preserve"><tspan
+       style="stroke-width:0.75"
+       y="28.748047"
+       x="205.23595"
+       id="tspan897-6"
+       sodipodi:role="line">E</tspan></text>
   <path
      style="fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0, 0.75, 1.5, 2.25, 3, 3.75, 4.5, 5.25, 6, 6.75, 7.5, 8.25, 9, 9.75, 10.5;stroke-dashoffset:0;stroke-opacity:1"
      d="M 375.69477,59.558333 V 298.70382"
      id="path1227" />
 </svg>
-</div>
-
-$$
-\begin{align}
-\frac{W-0}{1-(-1)} &= \frac{x-0}{x^{t}-(-1)} \\
-\frac{H-0}{1-(-1)} &= \frac{y-0}{y^{t}-(-1)} \\
-x &= \frac{W}{2} (x^{t} + 1) \\
-y &= \frac{H}{2} (y^{t} + 1) \\
-\end{align}
-$$
-
-Now, we can use the following function to get any value from feature map:
-
-```python
-x = 0.5 * (W - 1) * (x_norm + 1)
-y = 0.5 * (H - 1) * (y_norm + 1)
-```
-
-$$\mathcal{T}_{\theta}(G_{i})$$ is a matrix multiplication of $$\theta$$ and $$(\mathbf{x}^{t}, \mathbf{y}^{t}, \mathbf{1})$$:
-
-```python
-x_t_flat = np.reshape(x_t, [-1])
-y_t_flat = np.reshape(y_t, [-1])
-ones = np.ones_like(x_t_flat)
-sampling_grid = np.stack([x_t_flat, y_t_flat, ones])
-
-# repeat grid num_batch times
-sampling_grid = np.expand_dims(sampling_grid, axis=0)
-sampling_grid = np.tile(sampling_grid, np.stack([batch_size, 1, 1]))
-
-batch_grids = np.matmul(theta, sampling_grid)
-batch_grids = np.reshape(batch_grids, [batch_size, 2, height, width])
-```
-
-After the multiplication, then sample values from feature map $$ U $$ with $$(\mathbf{x}^{s}, \mathbf{y}^{s})$$
-
-```python
-def bilinear_sampler(feature_map, x_norm, y_norm):
-    H, W = np.shape(feature_map)[2:]
-    max_y = H - 1
-    max_x = W - 1
-
-    x = 0.5 * (max_x - 1) * (x_norm + 1)
-    y = 0.5 * (max_y - 1) * (y_norm + 1)
-
-    # grab 4 nearest corner points for each (x_i, y_i)
-    x0 = np.floor(x).astype(np.int32)
-    x1 = x0 + 1
-    y0 = np.floor(y).astype(np.int32)
-    y1 = y0 + 1
-
-    x0 = np.minimum(max_x, np.maximum(0, x0))
-    x1 = np.minimum(max_x, np.maximum(0, x1))
-    y0 = np.minimum(max_y, np.maximum(0, y0))
-    y1 = np.minimum(max_y, np.maximum(0, y1))
-
-    Ia = get_pixel_value(feature_map, x0, y0)
-    Ib = get_pixel_value(feature_map, x0, y1)
-    Ic = get_pixel_value(feature_map, x1, y0)
-    Id = get_pixel_value(feature_map, x1, y1)
-
-    # calculate deltas
-    wa = (x1 - x) * (y1 - y)
-    wb = (x1 - x) * (y - y0)
-    wc = (x - x0) * (y1 - y)
-    wd = (x - x0) * (y - y0)
-
-    # add dimension for addition
-    wa = np.expand_dims(wa, axis=1)
-    wb = np.expand_dims(wb, axis=1)
-    wc = np.expand_dims(wc, axis=1)
-    wd = np.expand_dims(wd, axis=1)
-
-    # add dimension for addition
-    out = wa * Ia + wb * Ib + wc * Ic + wd * Id
-    return out
-```
-
-Fortunately Pytorch provides a affine grid function `F.affine_grid` generating grid given $\theta$ and the size of feature map, and `F.grid_sample` performing bilinear interpolation on feature map given a grid. The full implementation of Spatial Transform Network:
-
-```python
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
-        self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(320, 50)
-        self.fc2 = nn.Linear(50, 10)
-
-        # Spatial transformer localization-network
-        self.localization = nn.Sequential(
-            nn.Conv2d(1, 8, kernel_size=7),
-            nn.MaxPool2d(2, stride=2),
-            nn.ReLU(True),
-            nn.Conv2d(8, 10, kernel_size=5),
-            nn.MaxPool2d(2, stride=2),
-            nn.ReLU(True)
-        )
-
-        # Regressor for the 3 * 2 affine matrix
-        self.fc_loc = nn.Sequential(
-            nn.Linear(10 * 3 * 3, 32),
-            nn.ReLU(True),
-            nn.Linear(32, 3 * 2)
-        )
-
-        # Initialize the weights/bias with identity transformation
-        self.fc_loc[2].weight.data.zero_()
-        self.fc_loc[2].bias.data.copy_(torch.tensor([1, 0, 0, 0, 1, 0], dtype=torch.float))
-
-    # Spatial transformer network forward function
-    def stn(self, x):
-        xs = self.localization(x)
-        xs = xs.view(-1, 10 * 3 * 3)
-        theta = self.fc_loc(xs)
-        theta = theta.view(-1, 2, 3)
-
-        grid = F.affine_grid(theta, x.size())
-        x = F.grid_sample(x, grid)
-
-        return x
-
-    def forward(self, x):
-        # transform the input
-        x = self.stn(x)
-
-        # Perform the usual forward pass
-        x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
-        x = x.view(-1, 320)
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x, training=self.training)
-        x = self.fc2(x)
-        return F.log_softmax(x, dim=1)
-```
-
-I've implemented in [numpy](https://github.com/eugene123tw/stn_numpy) based on [Kevin Zakka's tensorflow implementation](https://github.com/kevinzakka/spatial-transformer-network)
