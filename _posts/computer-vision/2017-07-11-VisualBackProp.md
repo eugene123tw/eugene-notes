@@ -2,13 +2,13 @@
 title: VisualBackProp
 published: false
 tags:
-  - cv
+  - Computer Vision
 ---
 
-這次要介紹由 Nvidia, NYU,Google Brain Robotics 共同發表的論文。
-這個方法可以在短時間內找出圖形中對 CNN 預測模型貢獻最多的 pixel sets。
-此篇論文所提出的方法主要是作為自駕車 CNN-based system 的 debug 工具。
+這次要介紹由 Nvidia, NYU,Google Brain Robotics 共同發表的論文。這個方法可以在短時間內找出圖形中對 CNN 預測模型貢獻最多的 pixel sets。 此篇論文所提出的方法主要是作為自駕車 CNN-based system 的 debug 工具。
+
 <!--more-->
+
 # Intro
 
 視覺化工具的目標主要是在偵測出原圖中對預測結果影響最深的部位, 其實也可以把這個工具當成一個 debug 工具, 因為我們希望在 training 前期時就知道我們的模型有在偵測出圖形預測的合理線索。

@@ -2,7 +2,7 @@
 title: From R-CNN to Faster R-CNN
 published: false
 tags:
-  - cv
+  - Computer Vision
 ---
 
 ## Object Detection

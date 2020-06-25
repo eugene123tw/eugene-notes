@@ -1,12 +1,91 @@
 ---
-title: A summary of Heaps
-published: false
+title: Spatial Transform Network
+published: true
 tags:
-  - Programming Interview
-  - Python
+  - Computer Vision
+  - Deep Learning
 ---
 
-Source: https://pytorch.org/tutorials/intermediate/spatial_transformer_tutorial.html
+<div class="card mb-3">
+    <img class="card-img-top" src="{{ site.baseurl }}/assets/img/2020-06-20-spatial-transform-network/stn.png"/>
+    <div class="card-body bg-light">
+        <div class="card-text">
+            Spatial Transform Network
+        </div>
+    </div>
+</div>
+
+Spatial transformer networks are a generalization of differentiable attention to any spatial transformation. Spatial transformer networks (STN for short) allow a neural network to learn how to perform **spatial transformations** (such as rotation, scaling) on the input image in order to enhance the geometric invariance of the model. It can be a useful mechanism because CNNs are not invariant to rotation and scale and more general affine transformations.
+
+<!--more-->
+
+### Localisation Network
+
+The architecture of a spatial transformer module. The input feature map $$ U \in \mathbb{R}^{H \times W \times C} $$ is passed to a localisation network $$ f_{\text{loc}} $$ which regresses the transformation parameters $$ \theta $$, the parameters of the transformation $$  \mathcal{T}_{\theta} $$ to be applied to the feature map: $$ \theta = f_{\text{loc}}(U) $$. The localisation network function $$ f_{\text{loc}}() $$ can take any form, such as a fully-connected network or a convolutional network, but should include a final regression layer to produce the transformation parameters $$ \theta $$.
+
+### Parameterised Sampling Grid
+
+To perform a warping of the input feature map, each output pixel (value) is computed by applying a sampling kernel centered at a particular location in the input feature map. In general, the output pixels are defined to lie on a regular grid $$ G = \{G_{i}\} $$ of pixels $$ G_{i} = (x^{t}_{i}, y^{t}_{i}) $$ -- $$ t $$ indicates as _target_, forming an output feature map $$ V \in \mathbb{R}^{H' \times W' \times C} $$.
+
+$$
+\begin{pmatrix}
+x_{i}^{s} \\
+y_{i}^{s}
+\end{pmatrix} = \mathcal{T}_{\theta}(G_{i}) =
+
+\begin{bmatrix}
+\theta_{11} & \theta_{12} & \theta_{13} \\
+\theta_{21} & \theta_{22} & \theta_{23}
+\end{bmatrix} \begin{pmatrix}
+x_{i}^{t} \\
+y_{i}^{t} \\
+1
+\end{pmatrix}
+$$
+
+, where $$ (x^{t}_{i}, y^{t}_{i}) $$ are the target coordinates of the regular grid in the output feature map, $$ (x^{s}_{i}, y^{s}_{i}) $$ are the source coordinates in the input feature map. We use height and width normalised coordinates, such that $$ −1 \leq x_{i}^{t}, y_{i}^{t} \leq 1 $$ when within the spatial bounds of the output, and $$ −1 \leq x_{i}^{s}, y_{i}^{s} \leq 1 $$ when within the spatial bounds of the input.
+
+Assume input images $$ U $$ and output images $$ V $$ have the same dimensions of $$ H \times W \times 1 $$. The regular grid $$ G $$ of $$ V $$ is normalized from $$ 0 \leq x_{i}^{t}, y_{i}^{t} \leq H $$ to $$ -1 \leq x_{i}^{t}, y_{i}^{t} \leq 1 $$
+
+$$
+\begin{bmatrix}
+(0, 0) & \cdots & (W, 0) \\
+  \vdots & (W/2, H/2)  &  \vdots \\
+(0, H) & \cdots & (W, H)
+\end{bmatrix} \rightarrow
+
+\begin{bmatrix}
+(-1, -1) & \cdots & (1, -1) \\
+  \vdots & (0, 0)  &  \vdots \\
+(-1, 1) & \cdots & (1, 1)
+\end{bmatrix}
+$$
+
+The normalized regular grid can be generated with `np.linspace` and `np.meshgrip`
+
+```python
+x = np.linspace(-1, 1, width)
+y = np.linspace(-1, 1, height)
+x_t, y_t = np.meshgrid(x, y)
+```
+
+Since we've normalized the regular grid to $$ (-1, 1) $$, we need to a linear interpolation function to map the normalized grid to the original grid. Doing so, we could get the value of $$ (x_{0}^{t}, y_{0}^{t}) $$ at $$ (x_{W/2}^{t}, y_{H/2}^{t}) $$ the orignal grid.
+
+$$
+\begin{align}
+x_{i} &= \frac{W}{2} (x_{i}^{t} + 1) \\
+y_{i} &= \frac{H}{2} (y_{i}^{t} + 1)
+\end{align}
+$$
+
+<div class="card mb-3">
+    <img class="card-img-top" src="{{ site.baseurl }}/assets/img/2020-06-20-spatial-transform-network/interpolation.svg"/>
+    <div class="card-body bg-light">
+        <div class="card-text">
+            Spatial Transform Network
+        </div>
+    </div>
+</div>
 
 ```python
 from __future__ import print_function

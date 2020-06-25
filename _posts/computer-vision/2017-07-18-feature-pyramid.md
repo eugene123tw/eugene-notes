@@ -2,10 +2,10 @@
 title: Feature Pyramid Networks for Object Detection
 published: false
 tags:
-  - cv
+  - Computer Vision
 ---
 
-這篇主要由 FAI R 的 3 位大神共同參與 Piotr Dollar, Ross Girshick, 何凱明, 內容的論述也是相當精彩。
+這篇主要由 FAIR 的 3 位大神共同參與 Piotr Dollar, Ross Girshick, 何凱明, 內容的論述也是相當精彩。
 用了簡單的概念就把過去在訓練多尺度特徵時所詬病的問題解決了, 如果對 object detection 與 classification 有興趣的讀者, 也不妨參照論文中的方法來實作一次。
 
 下圖讓小篇簡單介紹目前幾種擷取特徵與預測的方法:

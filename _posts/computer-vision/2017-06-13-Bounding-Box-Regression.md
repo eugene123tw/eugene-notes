@@ -2,7 +2,7 @@
 title: Bounding-box regression
 published: false
 tags:
-  - cv
+  - Computer Vision
 ---
 
 ## The concept behind Bounding Box regression:

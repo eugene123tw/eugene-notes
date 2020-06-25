@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+  <!-- center-align at x,y point: -->
+  <text font-size="11" x="100" y="175">\( a^2 + b^2 = c^2 \)</text>
+  <!-- left-align at x,y point: -->
+  <text font-size="11" x="100" y="205">L\( a^2 + b^2 = c^2 \)</text>
+  <!-- right-align at x,y point: -->
+  <text font-size="11" x="100" y="235">R\( a^2 + b^2 = c^2 \)</text>
+</svg>

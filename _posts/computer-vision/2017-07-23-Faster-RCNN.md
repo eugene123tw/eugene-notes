@@ -2,10 +2,11 @@
 title: Faster RCNN
 published: false
 tags:
-  - cv
+  - Computer Vision
 ---
 
 <!-- more -->
+
 ## Region proposals Network
 
 RPN 利用各種不同的尺度跟比例, 作為有效率預測 region proposals 的工具。可以把這種架構想像成一種 regression references 的金字塔, 如下圖, 用 sliding windows 的方式在 feature maps 上做移動, 每次移動都產出多種的不同的尺度跟比例 anchor boxes, 然後再去預測每個 anchor boxes 上的兩種分數 (兩個分數: 一個分數用來評分 anchor boxes 於位置上的評分, 另一個分數用來評價 anchor boxes 是物件或者不是物件)
