@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      #subdivision {
+        position: auto;
+        margin: auto;
+        width: 50%;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <div id="subdivision"></div>
+
+  <script type="module">
+    import { Grid, CreateSVGRect } from "/assets/demo/js/svg_toolbox.js";
+
+    var svg_height = 250;
+    var svg_width = 900;
+
+    var input_height = 1;
+    var input_width = 10;
+    var rect_pixels = 30;
+
+    var grid = Grid(input_height, input_width, rect_pixels, 0, 30);
+
+    var svg = d3
+      .select("#subdivision")
+      .append("svg")
+      .attr("width", svg_width)
+      .attr("height", svg_height)
+      .attr("fill", "#fff");
+
+    CreateSVGRect(svg, grid, "array");
+  </script>
+</html>

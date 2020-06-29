@@ -25,3 +25,55 @@ tags:
 
 - `bisect.bisect_right(a, x, lo=0, hi=len(a))`:
   - The returned insertion point `i` partitions the array a into two halves so that `all(val <= x for val in a[lo:i])` for the left side and `all(val > x for val in a[i:hi])` for the right side.
+
+### 9.1 Search a sorted array for first occurrence of $$ k $$
+
+Write a method that takes a sorted array and a key and returns the index of the **first occurrence** of that key in the array. Return `-1` if the key doesn't appear in the array. For example, when applied to the array below, the method should return `3` if the given key is `108`, if it is `285`, it should return `6`
+
+```
+-14  -10   2   108  108  243  285  285  285  401
+[0]  [1]  [2]  [3]  [4]  [5]  [6]  [7]  [8]  [9]
+```
+
+```python
+def search_first_of_k(A: List[int], k: int) -> int:
+    lower, upper, result = 0, len(A)-1, -1
+    while lower <= upper:
+        m = (lower + upper) //2
+        if A[m] < k:
+            lower = m + 1
+        elif A[m] == k:
+            result = m
+            upper = m - 1
+        else:
+            upper = m - 1
+    return result
+```
+
+### 9.3 Search a cyclically sorted array
+
+An array is said to be cyclically sorted if it is possible to cyclically shift its entries so that it becomes sorted. For example, the array below is cyclically sorted -- a cyclic left shift by 4 leads to a sorted array:
+
+```
+378  478  550  631  103  203  220  234  279  368
+[0]  [1]  [2]  [3]  [4]  [5]  [6]  [7]  [8]  [9]
+```
+
+Design an $$ O(\log n) $$ algorithm for finding the position of the smallest element in a cyclically sorted array. Assume all elements are distinct.
+For example for the array above, the algorithm should return 4.
+
+#### Solution
+
+If `A[m] > A[n-1]` then the minimum value must be in the range of `[m+1, n-1]`. Conversely, if `A[m] < A[n-1]`, then the minimum value is definitely not within the range of `[m+1, n-1]`
+
+```python
+def search_smallest(A: List[int]) -> int:
+    lower, upper = 0, len(A) - 1
+    while lower < upper:
+        m = (lower + upper)//2
+        if A[m] > A[upper]:
+            lower = m + 1
+        else:  # A[m] < A[upper]
+            upper = m
+    return lower
+```
