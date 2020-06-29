@@ -35,6 +35,10 @@ Write a method that takes a sorted array and a key and returns the index of the 
 [0]  [1]  [2]  [3]  [4]  [5]  [6]  [7]  [8]  [9]
 ```
 
+#### Solution
+
+Implement binary search to find the index of key value, if found, otherwise return `-1`. After finding the key index, we then need to check if the key is the first occurrence. This can be done by checking the previous value before the current index, change to the previous index if it has the same value as key, otherwise we have the first occurrence index of key.
+
 ```python
 def search_first_of_k(A: List[int], k: int) -> int:
     lower, upper, result = 0, len(A)-1, -1
