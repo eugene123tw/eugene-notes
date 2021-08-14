@@ -1,7 +1,7 @@
 ---
 title: Modify layer weights in Pytorch
 tags:
-  - pytorch
+  - PyTorch
 ---
 
 * Build your net: `net = create_network(protofile)`
