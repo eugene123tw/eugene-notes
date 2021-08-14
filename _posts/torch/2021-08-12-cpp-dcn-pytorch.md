@@ -343,3 +343,10 @@ class TestDeformconv(unittest.TestCase):
         </div>
     </div>
 </div>
+
+
+## Useful Links
+* [DCNv2 CPU version code](https://github.com/eugene123tw/mmcv-dcnv2)
+* [PyTorch Official post: Custom C++ and CUDA Extensions](https://pytorch.org/tutorials/advanced/cpp_extension.html)
+* [Github basic example: C++/CUDA Extensions in PyTorch](https://github.com/pytorch/extension-cpp)
+* [C++ Implementation of PyTorch Tutorials](https://github.com/prabhuomkar/pytorch-cpp)
